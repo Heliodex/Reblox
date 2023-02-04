@@ -1,4 +1,3 @@
-import Surreal from "https://deno.land/x/surrealdb/mod.ts"
 
 const db = new Surreal("http://localhost:8000/rpc")
 
