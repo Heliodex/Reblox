@@ -1,8 +1,8 @@
 import { Server } from "https://deno.land/std/http/server.ts"
 import { GraphQLHTTP } from "https://deno.land/x/gql/mod.ts"
 import { makeExecutableSchema } from "https://esm.sh/@graphql-tools/schema"
-import { typeDefs } from "./schema.js"
-import { resolvers } from "./resolvers.js"
+import resolvers from "./resolvers.js"
+import typeDefs from "./schema.js"
 
 schema = makeExecutableSchema { resolvers, typeDefs }
 

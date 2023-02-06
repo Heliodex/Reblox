@@ -1,7 +1,20 @@
 import { gql } from "https://deno.land/x/graphql_tag/mod.ts"
 
-export typeDefs = gql"""
+typeDefs = gql'
 	type Query {
-		hello: String
+		users: [User]
 	}
-"""
+
+	type Mutation {
+		create: User
+		delete: String
+	}
+
+	type User {
+		id: String
+		username: String
+		password: String
+	}
+'
+
+export default typeDefs
