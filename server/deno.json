@@ -1,6 +1,0 @@
-{
-	"tasks": {
-		"run": "coffee -co .\\js . && deno run --allow-net --allow-env --allow-read .\\js\\main.js",
-		"watch": "coffee -wco .\\js . & denon run --allow-net --allow-env --allow-read .\\js\\main.js"
-	}
-}
