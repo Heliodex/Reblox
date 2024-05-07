@@ -1,0 +1,14 @@
+{
+	"$schema": "https://wails.io/schemas/config.v2.json",
+	"name": "Reblox",
+	"outputfilename": "Reblox",
+	"frontend:install": "bun i",
+	"frontend:build": "bun --bun run build",
+	"frontend:dev:watcher": "bun --bun dev",
+	"frontend:dev:serverUrl": "auto",
+	"author": {
+		"name": "Lewin Kelly",
+		"email": "heli@odex.cf"
+	},
+	"wailsjsdir": "./frontend/src/lib"
+}

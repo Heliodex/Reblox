@@ -1,0 +1,22 @@
+body
+	margin 0 auto
+	color white
+	background #111
+
+
+
+*
+	font-family "Lexend", sans-serif
+	box-sizing border-box
+
+a
+	@apply transition-colors text-indigo-5
+
+	&:hover
+		@apply text-indigo-3
+		@media (prefers-color-scheme: light)
+			@apply text-indigo-7
+	&:active
+		@apply text-indigo-6
+		@media (prefers-color-scheme: light)
+			@apply text-indigo-4
