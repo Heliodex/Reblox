@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"Reblox/client/proto"
+	"Reblox/server/proto"
 )
 
 // App struct

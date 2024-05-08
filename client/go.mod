@@ -1,13 +1,13 @@
 module Reblox/client
 
-go 1.21
+go 1.22.2
 
-toolchain go1.22.2
+replace Reblox/server v0.0.0 => ../server
 
 require (
+	Reblox/server v0.0.0
 	github.com/wailsapp/wails/v2 v2.8.1
 	google.golang.org/grpc v1.63.2
-	google.golang.org/protobuf v1.33.0
 )
 
 require (
@@ -39,6 +39,7 @@ require (
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240227224415-6ceb2ff114de // indirect
+	google.golang.org/protobuf v1.34.1 // indirect
 )
 
 // replace github.com/wailsapp/wails/v2 v2.8.1 => C:\Users\Kelly_69z5nso\go\pkg\mod
