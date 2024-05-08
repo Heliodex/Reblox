@@ -3,8 +3,8 @@
 	"name": "Reblox",
 	"outputfilename": "Reblox",
 	"frontend:install": "bun i",
-	"frontend:build": "bun --bun run build",
-	"frontend:dev:watcher": "bun --bun dev",
+	"frontend:build": "bun --bun site:build",
+	"frontend:dev:watcher": "bun --bun site:dev",
 	"frontend:dev:serverUrl": "auto",
 	"author": {
 		"name": "Lewin Kelly",

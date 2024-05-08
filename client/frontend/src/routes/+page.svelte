@@ -1,11 +1,16 @@
 <script lang="ts">
-	import { Greet } from "$lib/wailsjs/go/main/App"
+	import { ContactServer, Greet } from "$lib/wailsjs/go/main/App"
 
 	let name = $state("")
 	let text = $state("Testing")
 
 	async function sayHi() {
 		text = await Greet(name)
+	}
+
+	async function contactServer() {
+		text = "Contacting server..."
+		text = await ContactServer("testing")
 	}
 </script>
 
@@ -19,3 +24,5 @@
 
 <input type="text" bind:value={name} placeholder="Enter your name" />
 <button onclick={sayHi}>Greet</button>
+
+<button onclick={contactServer}>Contact server</button>
