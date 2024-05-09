@@ -10,11 +10,9 @@ import (
 	"Reblox/server/proto"
 )
 
-type TestServiceServer struct {
-	proto.TestServiceServer
-}
+type TestService struct { proto.TestServiceServer }
 
-func (TestServiceServer) Test(ctx context.Context, in *proto.TestMessage) (*proto.TestMessage, error) {
+func (TestService) Test(ctx context.Context, in *proto.TestMessage) (*proto.TestMessage, error) {
 	fmt.Println("Received:", in.GetMessage())
 	return &proto.TestMessage{Message: `I received "` + in.GetMessage() + `"!`}, nil
 }
@@ -29,7 +27,7 @@ func main() {
 
 	// start grpc server
 	grpcServer := grpc.NewServer()
-	proto.RegisterTestServiceServer(grpcServer, TestServiceServer{})
+	proto.RegisterTestServiceServer(grpcServer, TestService{})
 
 	fmt.Println("Server started on port 2006")
 	err = grpcServer.Serve(listener)
