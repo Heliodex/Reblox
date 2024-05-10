@@ -1,7 +1,8 @@
 import {
 	provideFluentDesignSystem,
 	baseLayerLuminance,
-	fluentButton, fluentTextField
+	fluentButton,
+	fluentTextField,
 } from "@fluentui/web-components"
 
 baseLayerLuminance.setValueFor(document.body, 0)
