@@ -1,4 +1,4 @@
-package main
+package keys
 
 import (
 	"crypto/ecdh"
@@ -10,11 +10,15 @@ import (
 var curve = ecdh.X25519()
 
 func GeneratePrivateKey() (*ecdh.PrivateKey, error) {
-	sec, err := curve.GenerateKey(rand.Reader)
-	if err != nil {
-		return nil, err
-	}
-	return sec, nil
+	return curve.GenerateKey(rand.Reader)
+}
+
+func PrivateKey(source []byte) (*ecdh.PrivateKey, error) {
+	return curve.NewPrivateKey(source)
+}
+
+func PublicKey(source []byte) (*ecdh.PublicKey, error) {
+	return curve.NewPublicKey(source)
 }
 
 type KeyType uint8
@@ -76,4 +80,22 @@ func UnformatKey(key string) (KeyType, string, error) {
 	}
 
 	return keyType, withoutDashes, nil
+}
+
+func EncodeFormatted(keyType KeyType, source []byte) (string, error) {
+	encoded, err := Encode(source)
+	if err != nil {
+		return "", err
+	}
+
+	return FormatKey(keyType, encoded)
+}
+
+func DecodeFormatted(keyType KeyType, key string) ([]byte, error) {
+	_, unformatted, err := UnformatKey(key)
+	if err != nil {
+		return nil, err
+	}
+
+	return Decode(unformatted)
 }

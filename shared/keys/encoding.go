@@ -1,4 +1,4 @@
-package main
+package keys
 
 // base(d) on eknkc/basex
 
@@ -51,12 +51,7 @@ var runeMap = map[rune]int{
 var stringLength = 50
 var byteLength = 32
 
-func EncodeDigits(source *[]byte, digits []int) []int {
-
-	return digits
-}
-
-// Encode function receives a byte slice and encodes it to a string using the alphabet provided
+// Encode takes a public/private key and returns a string representation of itusing a custom alphabet 
 func Encode(source []byte) (string, error) {
 	if len(source) != byteLength {
 		// return "", fmt.Errorf("invalid length: %d", len(source))
@@ -92,8 +87,7 @@ func Encode(source []byte) (string, error) {
 	return string(res), nil
 }
 
-// Decode function decodes a string previously obtained from Encode, using the same alphabet and returns a byte slice
-// In case the input is not valid an arror will be returned
+// Decode takes a string representation of a public/private key and returns the byte representation of it
 func Decode(source string) ([]byte, error) {
 	if len(source) != stringLength {
 		// return nil, fmt.Errorf("invalid length: %d", len(source))

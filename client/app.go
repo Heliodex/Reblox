@@ -1,13 +1,16 @@
 package main
 
 import (
+	p "Reblox/server/proto"
+	"Reblox/shared/keys"
 	"context"
 	"fmt"
+	"time"
 
+	"golang.org/x/crypto/sha3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	"Reblox/server/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 // App struct
@@ -30,6 +33,8 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
+const sec = "e63mgel6p15f3dn8uxv4ni4ldylmrtyt0fubkxvl0z3q20y80w"
+
 func (a *App) ContactServer(message string) (string, error) {
 	conn, err := grpc.Dial("localhost:2006", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -37,8 +42,36 @@ func (a *App) ContactServer(message string) (string, error) {
 	}
 	defer conn.Close()
 
-	client := proto.NewTestServiceClient(conn)
-	resp, err := client.Test(context.Background(), &proto.TestMessage{Message: message})
+	client := p.NewEventServiceClient(conn)
+
+	secb, err := keys.Decode(sec)
+	if err != nil {
+		fmt.Println("Failed to decode private key:", err)
+		return "", err
+	}
+	privateKey, err := keys.PrivateKey(secb)
+	if err != nil {
+		fmt.Println("Failed to get private key:", err)
+		return "", err
+	}
+	pubb := privateKey.PublicKey().Bytes()
+
+	unsigned := &p.UnsignedBaseEvent{
+		Pubkey:  pubb,
+		Created: time.Now().UnixMilli(),
+	}
+
+	payload, err := proto.Marshal(unsigned)
+	if err != nil {
+		fmt.Println("Failed to marshal unsigned:", err)
+		return "", err
+	}
+	hash := sha3.Sum512(payload)
+
+	resp, err := client.Test(a.ctx, &p.SignedBaseEvent{
+		Id:      hash[:],
+		Payload: payload,
+	})
 	if err != nil {
 		fmt.Println("Failed to call Test:", err)
 		return "", err

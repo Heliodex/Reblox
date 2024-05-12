@@ -3,5 +3,29 @@ package test;
 
 option go_package = "./proto";
 
-message TestMessage { string message = 1; }
-service TestService { rpc Test(TestMessage) returns (TestMessage); }
+message Response { string message = 1; }
+
+message UnsignedBaseEvent {
+  // 32-byte X25519 public key of the sender
+  bytes pubkey = 1;
+  // Timestamp of the creation of the message, represents milliseconds of UTC
+  // time since Unix epoch. It is explicitly discouraged in the Protobuf
+  // documentation to use a timestamp like this, BUT the standard method of
+  // using google.protobuf.Timestamp could cause problems with canonical
+  // serialisation, which we need for signing.
+  int64 created = 2;
+}
+
+message SignedBaseEvent {
+  // 32-byte SHA-3-512 hash of the payload
+  bytes id = 1;
+  // Serialised UnsignedEvent
+  bytes payload = 2;
+  // 64-byte X25519 signature of the payload
+  bytes signature = 3;
+}
+
+service EventService {
+  // Test method
+  rpc Test(SignedBaseEvent) returns (Response);
+}
