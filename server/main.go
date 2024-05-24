@@ -1,12 +1,13 @@
 package main
 
 import (
-	p "Reblox/server/proto"
-	"Reblox/shared/keys"
 	"context"
 	"fmt"
 	"net"
 	"time"
+
+	p "Reblox/server/proto"
+	"Reblox/shared/keys"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -22,15 +23,15 @@ func (EventService) Test(ctx context.Context, in *p.SignedBaseEvent) (*p.Respons
 	proto.Unmarshal(in.Payload, unsigned2)
 
 	pubb2 := unsigned2.Pubkey
-	pub2, err := keys.Encode(pubb2)
+	pub2, err := keys.EncodeFormatted(keys.Public, pubb2)
 	if err != nil {
 		fmt.Println("Failed to encode pubkey:", err)
 		return nil, err
 	}
-	fmt.Println("Pubkey:  ", pub2)
+	fmt.Println("Pubkey\t", pub2)
 
 	time := time.UnixMilli(unsigned2.Created)
-	fmt.Println("Created: ", time)
+	fmt.Println("Created\t", time)
 	return &p.Response{Message: "Message received from " + pub2 + "!"}, nil
 }
 

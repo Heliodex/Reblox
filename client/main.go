@@ -36,7 +36,6 @@ func main() {
 		},
 		Frameless: true,
 	})
-
 	if err != nil {
 		println("Error:", err.Error())
 	}

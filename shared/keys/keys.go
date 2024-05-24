@@ -1,24 +1,29 @@
 package keys
 
 import (
-	"crypto/ecdh"
-	"crypto/rand"
 	"fmt"
 	"strings"
+
+	"github.com/ChainSafe/go-schnorrkel"
 )
 
-var curve = ecdh.X25519()
+func SecretKey(sk []byte) (*schnorrkel.SecretKey, error) {
+	sec := schnorrkel.NewSecretKey([32]byte(sk), [32]byte{})
 
-func GeneratePrivateKey() (*ecdh.PrivateKey, error) {
-	return curve.GenerateKey(rand.Reader)
+	return sec, nil
 }
 
-func PrivateKey(source []byte) (*ecdh.PrivateKey, error) {
-	return curve.NewPrivateKey(source)
-}
+func PublicKey(skBytes []byte) ([]byte, error) {
+	sk := schnorrkel.NewSecretKey([32]byte(skBytes), [32]byte{})
 
-func PublicKey(source []byte) (*ecdh.PublicKey, error) {
-	return curve.NewPublicKey(source)
+	pk, err := sk.Public()
+	if err != nil {
+		return nil, err
+	}
+
+	pkBytes := pk.Encode()
+
+	return pkBytes[:], nil
 }
 
 type KeyType uint8
@@ -26,7 +31,7 @@ type KeyType uint8
 const (
 	Invalid KeyType = iota
 	Public
-	Private
+	Secret
 )
 
 func FormatKey(keyType KeyType, key string) (string, error) {
@@ -39,7 +44,7 @@ func FormatKey(keyType KeyType, key string) (string, error) {
 
 	if keyType == Public {
 		formatted = "repub:"
-	} else if keyType == Private {
+	} else if keyType == Secret {
 		formatted = "resec:"
 	} else {
 		return "", fmt.Errorf("invalid key type: %d", keyType)
@@ -67,7 +72,7 @@ func UnformatKey(key string) (KeyType, string, error) {
 	if firstPart == "repub:" {
 		keyType = Public
 	} else if firstPart == "resec:" {
-		keyType = Private
+		keyType = Secret
 	} else {
 		return Invalid, "", fmt.Errorf("invalid key type: %s", key[:6])
 	}
@@ -91,7 +96,7 @@ func EncodeFormatted(keyType KeyType, source []byte) (string, error) {
 	return FormatKey(keyType, encoded)
 }
 
-func DecodeFormatted(keyType KeyType, key string) ([]byte, error) {
+func DecodeFormatted(key string) ([]byte, error) {
 	_, unformatted, err := UnformatKey(key)
 	if err != nil {
 		return nil, err

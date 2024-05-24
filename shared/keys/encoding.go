@@ -8,50 +8,54 @@ import (
 	"slices"
 )
 
-var alphabet = []rune("reblox0123456789acdfghijkmnpqstuvwyz")
-var base = len(alphabet)
-var runeMap = map[rune]int{
-	'r': 0,
-	'e': 1,
-	'b': 2,
-	'l': 3,
-	'o': 4,
-	'x': 5,
-	'0': 6,
-	'1': 7,
-	'2': 8,
-	'3': 9,
-	'4': 10,
-	'5': 11,
-	'6': 12,
-	'7': 13,
-	'8': 14,
-	'9': 15,
-	'a': 16,
-	'c': 17,
-	'd': 18,
-	'f': 19,
-	'g': 20,
-	'h': 21,
-	'i': 22,
-	'j': 23,
-	'k': 24,
-	'm': 25,
-	'n': 26,
-	'p': 27,
-	'q': 28,
-	's': 29,
-	't': 30,
-	'u': 31,
-	'v': 32,
-	'w': 33,
-	'y': 34,
-	'z': 35,
-}
-var stringLength = 50
-var byteLength = 32
+var (
+	alphabet = []rune("reblox0123456789acdfghijkmnpqstuvwyz")
+	base     = len(alphabet)
+	runeMap  = map[rune]int{
+		'r': 0,
+		'e': 1,
+		'b': 2,
+		'l': 3,
+		'o': 4,
+		'x': 5,
+		'0': 6,
+		'1': 7,
+		'2': 8,
+		'3': 9,
+		'4': 10,
+		'5': 11,
+		'6': 12,
+		'7': 13,
+		'8': 14,
+		'9': 15,
+		'a': 16,
+		'c': 17,
+		'd': 18,
+		'f': 19,
+		'g': 20,
+		'h': 21,
+		'i': 22,
+		'j': 23,
+		'k': 24,
+		'm': 25,
+		'n': 26,
+		'p': 27,
+		'q': 28,
+		's': 29,
+		't': 30,
+		'u': 31,
+		'v': 32,
+		'w': 33,
+		'y': 34,
+		'z': 35,
+	}
+)
+var (
+	stringLength = 50
+	byteLength   = 32
+)
 
-// Encode takes a public/private key and returns a string representation of itusing a custom alphabet 
+// Encode takes a public/secret key and returns a string representation of itusing a custom alphabet
 func Encode(source []byte) (string, error) {
 	if len(source) != byteLength {
 		// return "", fmt.Errorf("invalid length: %d", len(source))
@@ -87,7 +91,7 @@ func Encode(source []byte) (string, error) {
 	return string(res), nil
 }
 
-// Decode takes a string representation of a public/private key and returns the byte representation of it
+// Decode takes a string representation of a public/secret key and returns the byte representation of it
 func Decode(source string) ([]byte, error) {
 	if len(source) != stringLength {
 		// return nil, fmt.Errorf("invalid length: %d", len(source))

@@ -1,11 +1,12 @@
 package main
 
 import (
-	p "Reblox/server/proto"
-	"Reblox/shared/keys"
 	"context"
 	"fmt"
 	"time"
+
+	p "Reblox/server/proto"
+	"Reblox/shared/keys"
 
 	"golang.org/x/crypto/sha3"
 	"google.golang.org/grpc"
@@ -33,7 +34,7 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-const sec = "e63mgel6p15f3dn8uxv4ni4ldylmrtyt0fubkxvl0z3q20y80w"
+const sk = "resec:eco44kv2fj-8md68h4f0s-vut2oybxpr-idpkdjinuj-0l2z7fqmlc"
 
 func (a *App) ContactServer(message string) (string, error) {
 	conn, err := grpc.Dial("localhost:2006", grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -44,20 +45,19 @@ func (a *App) ContactServer(message string) (string, error) {
 
 	client := p.NewEventServiceClient(conn)
 
-	secb, err := keys.Decode(sec)
+	skBytes, err := keys.DecodeFormatted(sk)
 	if err != nil {
-		fmt.Println("Failed to decode private key:", err)
+		fmt.Println("Failed to decode secret key:", err)
 		return "", err
 	}
-	privateKey, err := keys.PrivateKey(secb)
+	pkBytes, err := keys.PublicKey(skBytes)
 	if err != nil {
-		fmt.Println("Failed to get private key:", err)
+		fmt.Println("Failed to get public key:", err)
 		return "", err
 	}
-	pubb := privateKey.PublicKey().Bytes()
-
+	
 	unsigned := &p.UnsignedBaseEvent{
-		Pubkey:  pubb,
+		Pubkey:  pkBytes,
 		Created: time.Now().UnixMilli(),
 	}
 
