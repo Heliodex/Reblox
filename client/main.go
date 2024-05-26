@@ -9,13 +9,13 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
-//go:embed all:frontend/dist
+//go:embed all:frontend/build
 var assets embed.FS
 
-func main() {
-	// Create an instance of the app structure
-	app := NewApp()
+// Create an instance of the app structure
+var app = &App{}
 
+func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:     "Reblox",

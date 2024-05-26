@@ -16,8 +16,8 @@ import (
 type EventService struct{ p.EventServiceServer }
 
 func (EventService) Test(ctx context.Context, in *p.SignedBaseEvent) (*p.Response, error) {
-	fmt.Printf("Id:      %x\n", in.Id)
-	fmt.Printf("Payload: %x\n", in.Payload)
+	fmt.Printf("Id\t\t%x\n", in.Id)
+	fmt.Printf("Signature\t%x\n", in.Payload)
 
 	unsigned2 := &p.UnsignedBaseEvent{}
 	proto.Unmarshal(in.Payload, unsigned2)
@@ -28,10 +28,10 @@ func (EventService) Test(ctx context.Context, in *p.SignedBaseEvent) (*p.Respons
 		fmt.Println("Failed to encode pubkey:", err)
 		return nil, err
 	}
-	fmt.Println("Pubkey\t", pub2)
+	fmt.Println("Pubkey\t\t", pub2)
 
 	time := time.UnixMilli(unsigned2.Created)
-	fmt.Println("Created\t", time)
+	fmt.Println("Created\t\t", time)
 	return &p.Response{Message: "Message received from " + pub2 + "!"}, nil
 }
 

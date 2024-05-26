@@ -6,7 +6,7 @@ option go_package = "./proto";
 message Response { string message = 1; }
 
 message UnsignedBaseEvent {
-  // 32-byte X25519 public key of the sender
+  // 32-byte sr25519 public key of the sender
   bytes pubkey = 1;
   // Timestamp of the creation of the message, represents milliseconds of UTC
   // time since Unix epoch. It is explicitly discouraged in the Protobuf
@@ -21,7 +21,7 @@ message SignedBaseEvent {
   bytes id = 1;
   // Serialised UnsignedEvent
   bytes payload = 2;
-  // 64-byte X25519 signature of the payload
+  // 64-byte sr25519 signature of the payload
   bytes signature = 3;
 }
 
